@@ -1,0 +1,37 @@
+<!--
+  Step 1: This is your descretion how you would like to display data,
+  but you must list display only one document based on the passed ID.
+-->
+<%- include ('../partials/header') %>
+
+<div class="container my-5">
+  <header>
+    <h1>
+      <%= resource.title %>
+      <% if (authorized && (typeof resource.author === 'undefined' || resource.author.email === email)) { %>
+      <a href="/resources/<%= resource.id %>/edit">
+        <i class="fa fa-edit"></i>
+      </a>
+      <% } %>
+    </h1>
+    <br>
+    <small>
+      <%= (resource.updatedAt.toLocaleString("en-CA")) %>
+    </small>
+    <p><strong>By: <%= resource.author.fullname %></strong></p>
+  </header>
+  <hr>
+  <div>
+    <strong>Publisher:</strong> <%= resource.publisher %>
+  </div>
+  <div>
+    <strong>Price:</strong> $<%= resource.price %>
+  </div>
+  <div class="abstract">
+    <strong>Abstract:</strong>
+    <br>
+    <%- resource.abstract %>
+  </div>
+</div>
+
+<%- include ('../partials/footer') %>
