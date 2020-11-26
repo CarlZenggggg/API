@@ -1,32 +1,16 @@
-// INSTRUCTIONS:
-/*
-  Create a new resource controller that uses the
-  User as an associative collection (examples):
-  - User -> Books
-  - User -> Reservation
-
-  The resource controller must contain the 7 resource actions:
-  - index
-  - show
-  - new
-  - create
-  - edit
-  - update
-  - delete
-*/
 const viewPath = 'resources';
-const Book = require('../models/Resource');
+const Sneaker = require('../models/Resource');
 const User = require('../models/User');
 
 exports.index = async (req, res) => {
   try {
-    const books = await Book
+    const sneakers = await Sneaker
       .find().populate('author')
       .sort({ updatedAt: 'desc' });
 
     res.render(`${viewPath}/index`, {
-      pageTitle: 'Books',
-      resources: books
+      pageTitle: 'Sneakers',
+      resources: sneakers
     });
   } catch (error) {
     req.flash('danger', `There was an error displaying the archive: ${error}`);
@@ -36,11 +20,11 @@ exports.index = async (req, res) => {
 
 exports.show = async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id).populate('author');
+    const sneaker = await Sneaker.findById(req.params.id).populate('author');
 
     res.render(`${viewPath}/show`, {
-      pageTitle: book.title,
-      resource: book
+      pageTitle: sneaker.name,
+      resource: sneaker
     });
   } catch (error) {
     req.flash('danger', `There was an error displaying this resource: ${error}`);
@@ -50,7 +34,7 @@ exports.show = async (req, res) => {
 
 exports.new = (req, res) => {
   res.render(`${viewPath}/new`, {
-    pageTitle: 'New Book'
+    pageTitle: 'Add a new sneaker product'
   });
 };
 
@@ -59,10 +43,10 @@ exports.create = async (req, res) => {
     const { user: email } = req.session.passport;
     const user = await User.findOne({ email: email });
 
-    const book = await Book.create({ author: user._id, ...req.body });
+    const sneaker = await Sneaker.create({ author: user._id, ...req.body });
 
     req.flash('success', 'Resource created successfully');
-    res.redirect(`/resources/${book.id}`);
+    res.redirect(`/resources/${sneaker.id}`);
   } catch (error) {
     req.flash('danger', `There was an error creating this resource: ${error}`);
     req.session.formData = req.body;
@@ -75,14 +59,14 @@ exports.edit = async (req, res) => {
     const { user: email } = req.session.passport;
     const user = await User.findOne({ email: email });
 
-    const book = await Book.findById(req.params.id).populate('author');
-    if (book.author.id == user.id) {
+    const sneaker = await Sneaker.findById(req.params.id).populate('author');
+    if (sneaker.author.id == user.id) {
       res.render(`${viewPath}/edit`, {
-        pageTitle: book.title,
-        formData: book
+        pageTitle: sneaker.name,
+        formData: sneaker
       });
     } else {
-      res.redirect(`/resources/${book.id}`);
+      res.redirect(`/resources/${sneaker.id}`);
     }
 
   } catch (error) {
@@ -96,12 +80,12 @@ exports.update = async (req, res) => {
     const { user: email } = req.session.passport;
     const user = await User.findOne({ email: email });
 
-    let book = await Book.findById(req.body.id).populate('author');
-    if (!book) throw new Error('Resource could not be found');
+    let sneaker = await Sneaker.findById(req.body.id).populate('author');
+    if (!sneaker) throw new Error('Resource could not be found');
 
     const attributes = { author: user._id, ...req.body };
-    await Book.validate(attributes);
-    await Book.findByIdAndUpdate(attributes.id, attributes);
+    await Sneaker.validate(attributes);
+    await Sneaker.findByIdAndUpdate(attributes.id, attributes);
 
     req.flash('success', 'The resource was updated successfully');
     res.redirect(`/resources/${req.body.id}`);
@@ -113,7 +97,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    await Book.deleteOne({ _id: req.body.id });
+    await Sneaker.deleteOne({ _id: req.body.id });
     req.flash('success', 'The resource was deleted successfully');
     res.redirect(`/resources`);
   } catch (error) {

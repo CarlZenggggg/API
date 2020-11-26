@@ -1,13 +1,9 @@
-<!--
-  Step 1: This is your descretion how you would like to display data,
-  but you must list display only one document based on the passed ID.
--->
 <%- include ('../partials/header') %>
 
 <div class="container my-5">
   <header>
     <h1>
-      <%= resource.title %>
+      <%= resource.name %>
       <% if (authorized && (typeof resource.author === 'undefined' || resource.author.email === email)) { %>
       <a href="/resources/<%= resource.id %>/edit">
         <i class="fa fa-edit"></i>
@@ -22,15 +18,15 @@
   </header>
   <hr>
   <div>
-    <strong>Publisher:</strong> <%= resource.publisher %>
+    <strong>ReleaseDate:</strong> <%= resource.releasedate %>
   </div>
   <div>
     <strong>Price:</strong> $<%= resource.price %>
   </div>
-  <div class="abstract">
-    <strong>Abstract:</strong>
+  <div class="description">
+    <strong>Description:</strong>
     <br>
-    <%- resource.abstract %>
+    <%- resource.description %>
   </div>
 </div>
 

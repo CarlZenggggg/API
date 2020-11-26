@@ -8,7 +8,7 @@ exports.new = (req, res) => {
   });
 };
 
-// Step 1: Create an action that will authenticate the user using Passport
+
 exports.create = (req, res, next) => {
   passport.authenticate('local', {
     successFlash: 'You were successfully logged in.',
@@ -18,7 +18,7 @@ exports.create = (req, res, next) => {
   })(req, res, next);
 };
 
-// Step 2: Log the user out
+
 exports.delete = (req, res) => {
   req.logout();
   req.flash('success', 'You were logged out successfully.');

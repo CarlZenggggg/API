@@ -13,7 +13,6 @@ exports.create = async (req, res) => {
   req.session.flash = {};
   
   try {
-    // Step 1: Create the new user and register them with Passport
     const user = new User(userDetails);
     await User.register(user, userDetails.password);
     req.flash('success', 'The user was successfully created');
