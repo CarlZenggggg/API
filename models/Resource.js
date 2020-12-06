@@ -18,6 +18,10 @@ const SneakerSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  resellprice: {
+    type: Number,
+    required: false
+  },
   releasedate: {
     type: String,
     required: false
