@@ -1,3 +1,4 @@
+//
 const viewPath = 'pages';
 
 exports.home = (req, res) => {
